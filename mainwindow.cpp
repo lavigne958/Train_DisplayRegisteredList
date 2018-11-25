@@ -25,22 +25,31 @@ MainWindow::setup()
 void
 MainWindow::setupUi()
 {
+    // group boxes
     this->ui->treeGroup->setTitle("Competitors tree");
     this->ui->infosGroup->setTitle("Competitor Info");
 
-    this->ui->competitorsTree->setModel(this->treeModel);
+    //left group box => compeptitors list
+    this->ui->competitorsTree->setColumnCount(1);
+    this->ui->competitorsTree->setHeaderLabel("Competitors");
+
+    //connect handlers
+
 }
 
 void
 MainWindow::fakeFillTree()
 {
-    this->treeModel = new QStringListModel();
-    QStringList listA;
-    QStringList listB;
+    this->ui->competitorsTree->insertTopLevelItem(0, new QTreeWidgetItem(QStringList(QString("A"))));
+    this->ui->competitorsTree->insertTopLevelItem(1, new QTreeWidgetItem(QStringList(QString("B"))));
+    this->ui->competitorsTree->insertTopLevelItem(2, new QTreeWidgetItem(QStringList(QString("C"))));
 
-    listA << "Alexandre" << "Baptiste" << "John";
+    QTreeWidgetItem *item = this->ui->competitorsTree->topLevelItem(0);
+    item->insertChild(0, new QTreeWidgetItem(QStringList(QString("A1"))));
+    item->insertChild(0, new QTreeWidgetItem(QStringList(QString("A2"))));
 
-    this->treeModel->setStringList(listA);
-    this->treeModel->insertRow(4);
-
+    item = this->ui->competitorsTree->topLevelItem(1);
+    item->insertChild(0, new QTreeWidgetItem(QStringList(QString("B1"))));
+    item->insertChild(0, new QTreeWidgetItem(QStringList(QString("B2"))));
 }
+

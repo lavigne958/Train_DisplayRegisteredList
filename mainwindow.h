@@ -2,8 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QStringListModel>
 #include <QStringList>
+#include <QTreeWidgetItem>
 
 namespace Ui {
 class MainWindow;
@@ -19,7 +19,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QStringListModel *treeModel;
 
     void setup();
     void setupUi();
