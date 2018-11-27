@@ -26,10 +26,12 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    csvreader.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    csvreader.h
 
 FORMS += \
         mainwindow.ui

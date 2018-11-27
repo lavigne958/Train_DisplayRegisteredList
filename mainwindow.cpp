@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "csvreader.h"
+#include <QDebug>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -8,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->fakeFillTree();
+    this->fillTree();
     this->setup();
 }
 
@@ -32,9 +36,6 @@ MainWindow::setupUi()
     //left group box => compeptitors list
     this->ui->competitorsTree->setColumnCount(1);
     this->ui->competitorsTree->setHeaderLabel("Competitors");
-
-    //connect handlers
-
 }
 
 void
@@ -53,3 +54,8 @@ MainWindow::fakeFillTree()
     item->insertChild(0, new QTreeWidgetItem(QStringList(QString("B2"))));
 }
 
+void
+MainWindow::fillTree()
+{
+    CSVReader::fillTree(this->ui->competitorsTree);
+}

@@ -23,6 +23,7 @@ private:
     void setup();
     void setupUi();
     void fakeFillTree();
+    void fillTree();
 };
 
 #endif // MAINWINDOW_H
