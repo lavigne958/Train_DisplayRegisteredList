@@ -4,15 +4,15 @@
 #include <QFile>
 #include <QDebug>
 
-#define FILE "../test.tsv"
-
-void
-CSVReader::fillTree(QTreeWidget *tree)
+QList<Competitor>
+CSVReader::getCompetitors(QString fileName)
 {
-    QFile *file = new QFile(FILE);
+    QFile *file = new QFile(fileName);
 
     qDebug() << "read file";
     file->open(QFile::ReadOnly);
+
+    QList<Competitor> competitors;
 
     //dump first line
     file->readLine();
@@ -26,40 +26,8 @@ CSVReader::fillTree(QTreeWidget *tree)
         qDebug() << "line: " << splitLine;
         Competitor c = Competitor(splitLine[NAME], splitLine[TEAM], splitLine[LEVEL], splitLine[WEIGHT], splitLine[FIELD]);
 
-        QTreeWidgetItem *root = tree->invisibleRootItem();
-
-        //field:
-        root = CSVReader::findCreateItem(c.field, root);
-        //Level:
-        root = CSVReader::findCreateItem(c.level, root);
-        //wieght:
-        root = CSVReader::findCreateItem(c.weight, root);
-        //team
-        root = CSVReader::findCreateItem(c.team, root);
-        //name
-        root = CSVReader::findCreateItem(c.name, root);
-    }
-}
-
-QTreeWidgetItem *
-CSVReader::findCreateItem(QString text, QTreeWidgetItem *root)
-{
-    QTreeWidgetItem *tmpChild = nullptr;
-
-    int i;
-    for (i = 0; i < root->childCount(); ++i) {
-        tmpChild = root->child(i);
-
-        //quick & dirty, found the entry in the tree
-        if (tmpChild->text(0).compare(text) == 0) break;
+        competitors << c;
     }
 
-    if (i >= root->childCount()) {
-        //did not find the entry
-        tmpChild = new QTreeWidgetItem(QStringList(text));
-        root->addChild(tmpChild);
-    }
-
-
-    return tmpChild;
+    return competitors;
 }

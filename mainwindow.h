@@ -24,6 +24,7 @@ private:
     void setupUi();
     void fakeFillTree();
     void fillTree();
+    QTreeWidgetItem *fillTreeEntry(QString text, QTreeWidgetItem *root);
 };
 
 #endif // MAINWINDOW_H

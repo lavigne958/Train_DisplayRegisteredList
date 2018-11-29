@@ -4,6 +4,8 @@
 #include "csvreader.h"
 #include <QDebug>
 
+#define FILE "../test.tsv"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -57,5 +59,44 @@ MainWindow::fakeFillTree()
 void
 MainWindow::fillTree()
 {
-    CSVReader::fillTree(this->ui->competitorsTree);
+    QList<Competitor> competitors = CSVReader::getCompetitors(FILE);
+
+     QTreeWidgetItem *root = nullptr;
+    for (auto c: competitors) {
+        //invisible root of the tree
+        root = this->ui->competitorsTree->invisibleRootItem();
+        //field:
+        root = this->fillTreeEntry(c.field, root);
+        //level:
+        root = this->fillTreeEntry(c.level, root);
+        //weight
+        root = this->fillTreeEntry(c.weight, root);
+        //team
+        root = this->fillTreeEntry(c.team, root);
+        //name
+        root = this->fillTreeEntry(c.name, root);
+    }
+}
+
+QTreeWidgetItem *
+MainWindow::fillTreeEntry(QString text, QTreeWidgetItem *root)
+{
+    QTreeWidgetItem *tmpChild = nullptr;
+
+    int i;
+    for (i = 0; i < root->childCount(); ++i) {
+        tmpChild = root->child(i);
+
+        //quick & dirty, found the entry in the tree
+        if (tmpChild->text(0).compare(text) == 0) break;
+    }
+
+    if (i >= root->childCount()) {
+        //did not find the entry
+        tmpChild = new QTreeWidgetItem(QStringList(text));
+        root->addChild(tmpChild);
+    }
+
+
+    return tmpChild;
 }
