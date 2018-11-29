@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->fakeFillTree();
+    //this->fakeFillTree();
     this->fillTree();
     this->setup();
 }

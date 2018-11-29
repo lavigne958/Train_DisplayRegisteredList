@@ -4,7 +4,7 @@
 #include <QFile>
 #include <QDebug>
 
-#define FILE "../test.csv"
+#define FILE "../test.tsv"
 
 void
 CSVReader::fillTree(QTreeWidget *tree)
@@ -13,31 +13,53 @@ CSVReader::fillTree(QTreeWidget *tree)
 
     qDebug() << "read file";
     file->open(QFile::ReadOnly);
-    for (int i = 0; i < 4; ++i) {
+
+    //dump first line
+    file->readLine();
+
+    while (!file->atEnd()) {
         QString line(file->readLine());
 
         if (line.isEmpty()) continue;
 
-        QStringList splitLine = line.split(",");
-        Competitor c = Competitor(splitLine[2], splitLine[4], splitLine[8], splitLine[10], splitLine[9]);
+        QStringList splitLine = line.split("\t");
+        qDebug() << "line: " << splitLine;
+        Competitor c = Competitor(splitLine[NAME], splitLine[TEAM], splitLine[LEVEL], splitLine[WEIGHT], splitLine[FIELD]);
 
-        QTreeWidgetItem *tmpItem = tree->itemAt(0, 0);
+        QTreeWidgetItem *root = tree->invisibleRootItem();
 
-        while (tmpItem) {
-            //the field alreay exists
-            if (!tmpItem->text(0).compare(c.field)) break;
-            tmpItem = tree->itemBelow(tmpItem);
-        }
-
-        if (!tmpItem) {
-            tmpItem = new QTreeWidgetItem(QStringList(c.field));
-            tree->insertTopLevelItem(0, tmpItem);
-        } else {
-            qDebug() << "error, should not be here ...";
-        }
-
-        //fiel is either new and created or alreay here and found
-
-        tmpItem = tmpItem->child(0);
+        //field:
+        root = CSVReader::findCreateItem(c.field, root);
+        //Level:
+        root = CSVReader::findCreateItem(c.level, root);
+        //wieght:
+        root = CSVReader::findCreateItem(c.weight, root);
+        //team
+        root = CSVReader::findCreateItem(c.team, root);
+        //name
+        root = CSVReader::findCreateItem(c.name, root);
     }
+}
+
+QTreeWidgetItem *
+CSVReader::findCreateItem(QString text, QTreeWidgetItem *root)
+{
+    QTreeWidgetItem *tmpChild = nullptr;
+
+    int i;
+    for (i = 0; i < root->childCount(); ++i) {
+        tmpChild = root->child(i);
+
+        //quick & dirty, found the entry in the tree
+        if (tmpChild->text(0).compare(text) == 0) break;
+    }
+
+    if (i >= root->childCount()) {
+        //did not find the entry
+        tmpChild = new QTreeWidgetItem(QStringList(text));
+        root->addChild(tmpChild);
+    }
+
+
+    return tmpChild;
 }
