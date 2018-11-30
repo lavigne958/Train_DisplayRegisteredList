@@ -8,10 +8,7 @@ QList<Competitor>
 CSVReader::getCompetitors(QString fileName)
 {
     QFile *file = new QFile(fileName);
-
-    qDebug() << "read file";
     file->open(QFile::ReadOnly);
-
     QList<Competitor> competitors;
 
     //dump first line
@@ -30,4 +27,17 @@ CSVReader::getCompetitors(QString fileName)
     }
 
     return competitors;
+}
+
+QStringList
+CSVReader::getHeader(QString fileName)
+{
+    QFile *file = new QFile(fileName);
+
+    qDebug() << "read file";
+    file->open(QFile::ReadOnly);
+
+    QString line = file->readLine();
+
+    return line.split("\t");
 }

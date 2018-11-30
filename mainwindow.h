@@ -23,8 +23,11 @@ private:
     void setup();
     void setupUi();
     void fakeFillTree();
-    void fillTree();
+    void fillTree(QString fileName);
     QTreeWidgetItem *fillTreeEntry(QString text, QTreeWidgetItem *root);
+
+private slots:
+    void on_loadCompetitor_triggerred();
 };
 
 #endif // MAINWINDOW_H

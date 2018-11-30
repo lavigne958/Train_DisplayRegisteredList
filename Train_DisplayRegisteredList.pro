@@ -28,15 +28,18 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     csvreader.cpp \
-    competitor.cpp
+    competitor.cpp \
+    csvheader.cpp
 
 HEADERS += \
         mainwindow.h \
     csvreader.h \
-    competitor.h
+    competitor.h \
+    csvheader.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    csvheader.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

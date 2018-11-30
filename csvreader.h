@@ -20,6 +20,7 @@ class CSVReader
 {
 public:
     static QList<Competitor> getCompetitors(QString fileName);
+    static QStringList getHeader(QString fileName);
 };
 
 #endif // CSVREADER_H

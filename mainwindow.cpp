@@ -1,7 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 #include "csvreader.h"
+#include "csvheader.h"
+
+#include <QFileDialog>
+
+
 #include <QDebug>
 
 #define FILE "../test.tsv"
@@ -12,8 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //this->fakeFillTree();
-    this->fillTree();
     this->setup();
 }
 
@@ -25,6 +27,7 @@ MainWindow::~MainWindow()
 void
 MainWindow::setup()
 {
+    //this->fakeFillTree();
     this->setupUi();
 }
 
@@ -38,6 +41,9 @@ MainWindow::setupUi()
     //left group box => compeptitors list
     this->ui->competitorsTree->setColumnCount(1);
     this->ui->competitorsTree->setHeaderLabel("Competitors");
+
+    connect(this->ui->actionLoad_Competitors, &QAction::triggered,
+            this, &MainWindow::on_loadCompetitor_triggerred);
 }
 
 void
@@ -57,9 +63,9 @@ MainWindow::fakeFillTree()
 }
 
 void
-MainWindow::fillTree()
+MainWindow::fillTree(QString fileName)
 {
-    QList<Competitor> competitors = CSVReader::getCompetitors(FILE);
+    QList<Competitor> competitors = CSVReader::getCompetitors(fileName);
 
      QTreeWidgetItem *root = nullptr;
     for (auto c: competitors) {
@@ -99,4 +105,21 @@ MainWindow::fillTreeEntry(QString text, QTreeWidgetItem *root)
 
 
     return tmpChild;
+}
+
+void
+MainWindow::on_loadCompetitor_triggerred()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    "Open competitors TSV File",
+                                                    "/home/alexandre/projects/",
+                                                    "Tabulated Separated Value file (*.tsv)");
+
+    QStringList headers = CSVReader::getHeader(fileName);
+
+    CSVHeader *headerDialog = new CSVHeader(this, headers);
+    headerDialog->setModal(true);
+    headerDialog->show();
+
+    this->fillTree(fileName);
 }
