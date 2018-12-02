@@ -6,6 +6,7 @@
 #include <QString>
 #include <QStringList>
 #include <QListWidgetItem>
+#include <QComboBox>
 
 namespace Ui {
 class CSVHeader;
@@ -23,6 +24,13 @@ public:
 private:
     Ui::CSVHeader *ui;
     QList<QString> headers;
+    QList<QComboBox *> headerChoices;
+
+    void addUiHeaderChoice(int pos);
+    void stripHeader(int maxStrSize);
+
+private slots:
+    void on_choice_changed(QString newText);
 };
 
 #endif // CSVHEADER_H

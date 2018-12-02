@@ -20,7 +20,6 @@ CSVReader::getCompetitors(QString fileName)
         if (line.isEmpty()) continue;
 
         QStringList splitLine = line.split("\t");
-        qDebug() << "line: " << splitLine;
         Competitor c = Competitor(splitLine[NAME], splitLine[TEAM], splitLine[LEVEL], splitLine[WEIGHT], splitLine[FIELD]);
 
         competitors << c;
@@ -34,9 +33,7 @@ CSVReader::getHeader(QString fileName)
 {
     QFile *file = new QFile(fileName);
 
-    qDebug() << "read file";
     file->open(QFile::ReadOnly);
-
     QString line = file->readLine();
 
     return line.split("\t");
