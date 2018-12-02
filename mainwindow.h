@@ -19,6 +19,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QString fileName;
 
     void setup();
     void setupUi();
@@ -28,6 +29,7 @@ private:
 
 private slots:
     void on_loadCompetitor_triggerred();
+    void on_csvHeader_dialog_close(int status);
 };
 
 #endif // MAINWINDOW_H

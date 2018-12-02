@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->setup();
+
+    this->on_loadCompetitor_triggerred();
 }
 
 MainWindow::~MainWindow()
@@ -110,16 +112,25 @@ MainWindow::fillTreeEntry(QString text, QTreeWidgetItem *root)
 void
 MainWindow::on_loadCompetitor_triggerred()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
+    this->fileName = QFileDialog::getOpenFileName(this,
                                                     "Open competitors TSV File",
                                                     "/home/alexandre/projects/",
                                                     "Tabulated Separated Value file (*.tsv)");
 
-    QStringList headers = CSVReader::getHeader(fileName);
+    QStringList headers = CSVReader::getHeader(this->fileName);
 
     CSVHeader *headerDialog = new CSVHeader(this, headers);
     headerDialog->setModal(true);
     headerDialog->show();
 
-    this->fillTree(fileName);
+    connect(headerDialog, &CSVHeader::finished,
+            this, &MainWindow::on_csvHeader_dialog_close);
+}
+
+void
+MainWindow::on_csvHeader_dialog_close(int status)
+{
+    if (status == 1) {
+        this->fillTree(this->fileName);
+    }
 }

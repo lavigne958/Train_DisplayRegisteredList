@@ -23,10 +23,11 @@ public:
 
 private:
     Ui::CSVHeader *ui;
-    QList<QString> headers;
-    QList<QComboBox *> headerChoices;
+    QStringList headers;
+    QList<QPair<QComboBox *, QString>> selctorsHeaders;
+    bool updateInProgress;
 
-    void addUiHeaderChoice(int pos);
+    QComboBox *addUiHeaderChoice(int pos);
     void stripHeader(int maxStrSize);
 
 private slots:
