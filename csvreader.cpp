@@ -35,10 +35,12 @@ CSVReader::getCompetitors(QString fileName, QStringList headers)
         if (line.isEmpty()) continue;
 
         QStringList splitLine = line.split("\t");
-        QStringList competitorInfo;
+        QList<QPair<QString, QString>> competitorInfo;
 
         for (auto& h: headersMapping) {
-            competitorInfo << splitLine[h.second];
+            QPair<QString, QString> infos = QPair<QString, QString>(h.first, splitLine[h.second]);
+            qDebug() << "competitor: " << infos;
+            competitorInfo << infos;
         }
 
         Competitor c = Competitor(competitorInfo);

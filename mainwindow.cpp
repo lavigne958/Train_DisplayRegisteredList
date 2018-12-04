@@ -73,6 +73,14 @@ MainWindow::fillTree(QString fileName)
     for (auto c: competitors) {
         //invisible root of the tree
         root = this->ui->competitorsTree->invisibleRootItem();
+
+        QStringList headerToInsert = c.getHeaders();
+
+        for (auto& header: headerToInsert) {
+            root = this->fillTreeEntry(c.getInfo(header), root);
+        }
+
+        /*
         //field:
         root = this->fillTreeEntry(c.infos[0], root);
         //level:
@@ -83,6 +91,7 @@ MainWindow::fillTree(QString fileName)
         root = this->fillTreeEntry(c.infos[3], root);
         //name
         root = this->fillTreeEntry(c.infos[4], root);
+        */
     }
 }
 
