@@ -7,6 +7,7 @@
 #include <QStringList>
 #include <QListWidgetItem>
 #include <QComboBox>
+#include <QAbstractButton>
 
 namespace Ui {
 class CSVHeader;
@@ -21,6 +22,9 @@ public:
     explicit CSVHeader(QWidget *parent, QStringList headers);
     ~CSVHeader();
 
+signals:
+    void validate(QStringList headers);
+
 private:
     Ui::CSVHeader *ui;
     QStringList headers;
@@ -32,6 +36,7 @@ private:
 
 private slots:
     void on_choice_changed(QString newText);
+    void on_ok_button_click(QAbstractButton *button);
 };
 
 #endif // CSVHEADER_H

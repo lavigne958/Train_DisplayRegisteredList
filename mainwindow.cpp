@@ -67,22 +67,22 @@ MainWindow::fakeFillTree()
 void
 MainWindow::fillTree(QString fileName)
 {
-    QList<Competitor> competitors = CSVReader::getCompetitors(fileName);
+    QList<Competitor> competitors = CSVReader::getCompetitors(fileName, this->selectHeaders);
 
      QTreeWidgetItem *root = nullptr;
     for (auto c: competitors) {
         //invisible root of the tree
         root = this->ui->competitorsTree->invisibleRootItem();
         //field:
-        root = this->fillTreeEntry(c.field, root);
+        root = this->fillTreeEntry(c.infos[0], root);
         //level:
-        root = this->fillTreeEntry(c.level, root);
+        root = this->fillTreeEntry(c.infos[1], root);
         //weight
-        root = this->fillTreeEntry(c.weight, root);
+        root = this->fillTreeEntry(c.infos[2], root);
         //team
-        root = this->fillTreeEntry(c.team, root);
+        root = this->fillTreeEntry(c.infos[3], root);
         //name
-        root = this->fillTreeEntry(c.name, root);
+        root = this->fillTreeEntry(c.infos[4], root);
     }
 }
 
@@ -117,6 +117,11 @@ MainWindow::on_loadCompetitor_triggerred()
                                                     "/home/alexandre/projects/",
                                                     "Tabulated Separated Value file (*.tsv)");
 
+    if (this->fileName.isEmpty()) {
+        //did not choose to open a file
+        return;
+    }
+
     QStringList headers = CSVReader::getHeader(this->fileName);
 
     CSVHeader *headerDialog = new CSVHeader(this, headers);
@@ -125,6 +130,15 @@ MainWindow::on_loadCompetitor_triggerred()
 
     connect(headerDialog, &CSVHeader::finished,
             this, &MainWindow::on_csvHeader_dialog_close);
+
+    connect(headerDialog, &CSVHeader::validate,
+            this, &MainWindow::on_csvHeader_validate);
+}
+
+void
+MainWindow::on_csvHeader_validate(QStringList headers)
+{
+    this->selectHeaders = headers;
 }
 
 void

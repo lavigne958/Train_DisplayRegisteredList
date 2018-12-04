@@ -7,6 +7,7 @@
 #include <QDebug>
 
 #define MAX_HEADER_SIZE 80
+#define DO_NOT_USE "Do not use"
 
 CSVHeader::CSVHeader(QWidget *parent) :
     QDialog(parent),
@@ -27,6 +28,8 @@ CSVHeader::CSVHeader(QWidget *parent, QStringList headers):
     this->ui->headersList->setTitle("List of found headers");
     //strip header that migh be too long
     this->stripHeader(MAX_HEADER_SIZE);
+    connect(this->ui->buttonBox, &QDialogButtonBox::clicked,
+            this, &CSVHeader::on_ok_button_click);
     this->updateInProgress = false;
 
     for (int i = 0; i < this->headers.size(); ++i) {
@@ -57,7 +60,7 @@ CSVHeader::addUiHeaderChoice(int pos)
     headerLabel = new QLabel(lab);
 
     headersChoice = new QComboBox();
-    headersChoice->addItem("Do not use");
+    headersChoice->addItem(DO_NOT_USE);
     headersChoice->addItems(QStringList(this->headers));
 
     this->ui->verticalLayout->addWidget(headerLabel);
@@ -145,4 +148,19 @@ CSVHeader::on_choice_changed(QString newText)
 
     this->updateInProgress = false;
     qDebug() << "udpate finished";
+}
+
+void
+CSVHeader::on_ok_button_click(QAbstractButton *button)
+{
+    QStringList choosenHeaders;
+
+    for (auto& selector: this->selctorsHeaders) {
+        QString header = selector.first->currentText();
+
+        if (header.compare(DO_NOT_USE) != 0)
+            choosenHeaders << header;
+    }
+
+    emit validate(choosenHeaders);
 }

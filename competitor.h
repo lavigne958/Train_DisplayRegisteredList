@@ -2,18 +2,15 @@
 #define COMPETITOR_H
 
 #include <QString>
+#include <QStringList>
 
 class Competitor
 {
 public:
     Competitor();
-    Competitor(QString name, QString team, QString level, QString weight, QString field);
+    Competitor(QStringList);
 
-    QString name;
-    QString team;
-    QString level;
-    QString weight;
-    QString field;
+    QStringList infos;
 };
 
 #endif // COMPETITOR_H
