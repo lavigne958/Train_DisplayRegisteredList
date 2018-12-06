@@ -5,10 +5,10 @@
 #include <QDebug>
 
 QList<Competitor>
-CSVReader::getCompetitors(QString fileName, QStringList headers)
+CSVReader::getCompetitors(const QString& fileName, QStringList headers)
 {
-    QFile *file = new QFile(fileName);
-    file->open(QFile::ReadOnly);
+    auto *file = new QFile(fileName);
+    file->open(QFile::ReadOnly | QFile::Text);
     QList<Competitor> competitors;
 
     //dump first line
@@ -46,16 +46,21 @@ CSVReader::getCompetitors(QString fileName, QStringList headers)
         competitors << c;
     }
 
+    file->close();
+    delete file;
+
     return competitors;
 }
 
 QStringList
-CSVReader::getHeader(QString fileName)
+CSVReader::getHeader(const QString& fileName)
 {
-    QFile *file = new QFile(fileName);
+    auto *file = new QFile(fileName);
 
-    file->open(QFile::ReadOnly);
+    file->open(QFile::ReadOnly | QFile::Text);
     QString line = file->readLine();
+    file->close();
+    delete file;
 
     return line.split("\t");
 }

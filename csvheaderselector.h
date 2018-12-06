@@ -10,23 +10,23 @@
 #include <QAbstractButton>
 
 namespace Ui {
-class CSVHeader;
+class CSVHeaderSelector;
 }
 
-class CSVHeader : public QDialog
+class CSVHeaderSelector : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit CSVHeader(QWidget *parent = nullptr);
-    explicit CSVHeader(QWidget *parent, QStringList headers);
-    ~CSVHeader();
+    explicit CSVHeaderSelector(QWidget *parent = nullptr);
+    explicit CSVHeaderSelector(QWidget *parent, QStringList headers);
+    ~CSVHeaderSelector();
 
 signals:
     void validate(QStringList headers);
 
 private:
-    Ui::CSVHeader *ui;
+    Ui::CSVHeaderSelector *ui;
     QStringList headers;
     QList<QPair<QComboBox *, QString>> selctorsHeaders;
     bool updateInProgress;
@@ -35,7 +35,7 @@ private:
     void stripHeader(int maxStrSize);
 
 private slots:
-    void on_choice_changed(QString newText);
+    void on_choice_changed(const QString &newText);
     void on_ok_button_click(QAbstractButton *button);
 };
 

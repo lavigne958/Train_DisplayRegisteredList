@@ -2,9 +2,7 @@
 
 #include <QtDebug>
 
-Competitor::Competitor()
-{
-}
+
 
 Competitor::Competitor(QList<QPair<QString, QString>> infos):
         infos(infos)
@@ -41,7 +39,7 @@ Competitor::getInfo(int index)
 }
 
 QString
-Competitor::getInfo(QString header)
+Competitor::getInfo(const QString &header)
 {
     for (auto info: this->infos) {
         if (info.first.compare(header) == 0) {

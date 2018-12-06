@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CSVHeader</class>
- <widget class="QDialog" name="CSVHeader">
+ <class>CSVHeaderSelector</class>
+ <widget class="QDialog" name="CSVHeaderSelector">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -29,7 +29,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
+    <widget class="QDialogButtonBox" name="okCancelButtons">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -43,9 +43,9 @@
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>okCancelButtons</sender>
    <signal>accepted()</signal>
-   <receiver>CSVHeader</receiver>
+   <receiver>CSVHeaderSelector</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -59,9 +59,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>okCancelButtons</sender>
    <signal>rejected()</signal>
-   <receiver>CSVHeader</receiver>
+   <receiver>CSVHeaderSelector</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

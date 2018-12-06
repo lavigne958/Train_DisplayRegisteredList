@@ -9,16 +9,17 @@
 #define MAX_HEADER_SIZE 80
 #define DO_NOT_USE "Do not use"
 
-CSVHeader::CSVHeader(QWidget *parent) :
+CSVHeaderSelector::CSVHeaderSelector(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::CSVHeader)
+    ui(new Ui::CSVHeaderSelector)
 {
+    this->updateInProgress = false;
     ui->setupUi(this);
 }
 
-CSVHeader::CSVHeader(QWidget *parent, QStringList headers):
+CSVHeaderSelector::CSVHeaderSelector(QWidget *parent, QStringList headers):
     QDialog(parent),
-    ui(new Ui::CSVHeader),
+    ui(new Ui::CSVHeaderSelector),
     headers(headers)
 {
     ui->setupUi(this);
@@ -28,8 +29,8 @@ CSVHeader::CSVHeader(QWidget *parent, QStringList headers):
     this->ui->headersList->setTitle("List of found headers");
     //strip header that migh be too long
     this->stripHeader(MAX_HEADER_SIZE);
-    connect(this->ui->buttonBox, &QDialogButtonBox::clicked,
-            this, &CSVHeader::on_ok_button_click);
+    connect(this->ui->okCancelButtons, &QDialogButtonBox::clicked,
+            this, &CSVHeaderSelector::on_ok_button_click);
     this->updateInProgress = false;
 
     for (int i = 0; i < this->headers.size(); ++i) {
@@ -38,19 +39,23 @@ CSVHeader::CSVHeader(QWidget *parent, QStringList headers):
         //keep a pointer to the combobox
         headerSelect.first = this->addUiHeaderChoice(i);
         //keep the current selected header for this combobox
-        headerSelect.second = "";
+        headerSelect.second = DO_NOT_USE;
 
         this->selctorsHeaders.append(headerSelect);
     }
 }
 
-CSVHeader::~CSVHeader()
+CSVHeaderSelector::~CSVHeaderSelector()
 {
+    for (auto& pair: this->selctorsHeaders) {
+        delete pair.first;
+    }
+
     delete ui;
 }
 
 QComboBox *
-CSVHeader::addUiHeaderChoice(int pos)
+CSVHeaderSelector::addUiHeaderChoice(int pos)
 {
     QLabel *headerLabel = nullptr;
     QComboBox *headersChoice = nullptr;
@@ -61,19 +66,19 @@ CSVHeader::addUiHeaderChoice(int pos)
 
     headersChoice = new QComboBox();
     headersChoice->addItem(DO_NOT_USE);
-    headersChoice->addItems(QStringList(this->headers));
+    headersChoice->addItems(this->headers);
 
     this->ui->verticalLayout->addWidget(headerLabel);
     this->ui->verticalLayout->addWidget(headersChoice);
 
     connect(headersChoice, QOverload<const QString &>::of(&QComboBox::currentIndexChanged),
-            this, &CSVHeader::on_choice_changed);
+            this, &CSVHeaderSelector::on_choice_changed);
 
     return headersChoice;
 }
 
 void
-CSVHeader::stripHeader(int maxStrSize)
+CSVHeaderSelector::stripHeader(int maxStrSize)
 {
     for (int i = 0; i < this->headers.size(); ++i) {
         if (headers[i].size() > maxStrSize) {
@@ -83,7 +88,7 @@ CSVHeader::stripHeader(int maxStrSize)
 }
 
 void
-CSVHeader::on_choice_changed(QString newText)
+CSVHeaderSelector::on_choice_changed(const QString &newText)
 {
     if (this->updateInProgress) return;
 
@@ -138,7 +143,7 @@ CSVHeader::on_choice_changed(QString newText)
 }
 
 void
-CSVHeader::on_ok_button_click(QAbstractButton *button)
+CSVHeaderSelector::on_ok_button_click(QAbstractButton *button __attribute__((unused)))
 {
     QStringList choosenHeaders;
 

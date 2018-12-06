@@ -17,8 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->setup();
-
-    this->on_loadCompetitor_triggerred();
 }
 
 MainWindow::~MainWindow()
@@ -30,11 +28,11 @@ void
 MainWindow::setup()
 {
     //this->fakeFillTree();
-    this->setupUi();
+    this->setupUiSettings();
 }
 
 void
-MainWindow::setupUi()
+MainWindow::setupUiSettings()
 {
     // group boxes
     this->ui->treeGroup->setTitle("Competitors tree");
@@ -65,11 +63,11 @@ MainWindow::fakeFillTree()
 }
 
 void
-MainWindow::fillTree(QString fileName)
+MainWindow::fillTree(const QString& fileName)
 {
     QList<Competitor> competitors = CSVReader::getCompetitors(fileName, this->selectHeaders);
 
-     QTreeWidgetItem *root = nullptr;
+    QTreeWidgetItem *root = nullptr;
     for (auto c: competitors) {
         //invisible root of the tree
         root = this->ui->competitorsTree->invisibleRootItem();
@@ -83,7 +81,7 @@ MainWindow::fillTree(QString fileName)
 }
 
 QTreeWidgetItem *
-MainWindow::fillTreeEntry(QString text, QTreeWidgetItem *root)
+MainWindow::fillTreeEntry(const QString& text, QTreeWidgetItem *root)
 {
     QTreeWidgetItem *tmpChild = nullptr;
 
@@ -96,7 +94,7 @@ MainWindow::fillTreeEntry(QString text, QTreeWidgetItem *root)
     }
 
     if (i >= root->childCount()) {
-        //did not find the entry
+        //did not find the entry, should be freed when freeing ui
         tmpChild = new QTreeWidgetItem(QStringList(text));
         root->addChild(tmpChild);
     }
@@ -120,14 +118,14 @@ MainWindow::on_loadCompetitor_triggerred()
 
     QStringList headers = CSVReader::getHeader(this->fileName);
 
-    CSVHeader *headerDialog = new CSVHeader(this, headers);
+    CSVHeaderSelector *headerDialog = new CSVHeaderSelector(this, headers);
     headerDialog->setModal(true);
     headerDialog->show();
 
-    connect(headerDialog, &CSVHeader::finished,
+    connect(headerDialog, &CSVHeaderSelector::finished,
             this, &MainWindow::on_csvHeader_dialog_close);
 
-    connect(headerDialog, &CSVHeader::validate,
+    connect(headerDialog, &CSVHeaderSelector::validate,
             this, &MainWindow::on_csvHeader_validate);
 }
 

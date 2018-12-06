@@ -23,10 +23,10 @@ private:
     QStringList selectHeaders;
 
     void setup();
-    void setupUi();
+    void setupUiSettings();
     void fakeFillTree();
-    void fillTree(QString fileName);
-    QTreeWidgetItem *fillTreeEntry(QString text, QTreeWidgetItem *root);
+    void fillTree(const QString& fileName);
+    QTreeWidgetItem *fillTreeEntry(const QString& text, QTreeWidgetItem *root);
 
 private slots:
     void on_loadCompetitor_triggerred();

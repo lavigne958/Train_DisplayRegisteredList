@@ -10,8 +10,8 @@
 class CSVReader
 {
 public:
-    static QList<Competitor> getCompetitors(QString fileName, QStringList headers);
-    static QStringList getHeader(QString fileName);
+    static QList<Competitor> getCompetitors(const QString &fileName, QStringList headers);
+    static QStringList getHeader(const QString &fileName);
 };
 
 #endif // CSVREADER_H

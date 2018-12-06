@@ -29,13 +29,13 @@ SOURCES += \
         mainwindow.cpp \
     csvreader.cpp \
     competitor.cpp \
-    csvheader.cpp
+    csvheaderselector.cpp
 
 HEADERS += \
         mainwindow.h \
     csvreader.h \
     competitor.h \
-    csvheader.h
+    csvheaderselector.h
 
 FORMS += \
         mainwindow.ui \
