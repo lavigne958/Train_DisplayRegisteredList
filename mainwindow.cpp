@@ -4,7 +4,10 @@
 #include "csvheaderselector.h"
 
 #include <QFileDialog>
+#include <QVariant>
 
+//Needed for QVariant auto instanciate from Competitor class
+Q_DECLARE_METATYPE(Competitor);
 
 #include <QDebug>
 
@@ -82,7 +85,7 @@ MainWindow::fillTree(const QString& fileName)
     QList<Competitor> competitors = CSVReader::getCompetitors(fileName, this->selectHeaders);
 
     QTreeWidgetItem *root = nullptr;
-    for (auto c: competitors) {
+    for (auto& c: competitors) {
         //invisible root of the tree
         root = this->ui->competitorsTree->invisibleRootItem();
 
@@ -91,6 +94,10 @@ MainWindow::fillTree(const QString& fileName)
         for (auto& header: headerToInsert) {
             root = this->fillTreeEntry(c.getInfo(header), root);
         }
+
+        qDebug() << "last root: " << root->text(0);
+        QVariant v = QVariant::fromValue(c);
+        root->setData(0, 1, v);
     }
 }
 
