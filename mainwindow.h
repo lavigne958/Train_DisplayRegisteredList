@@ -27,6 +27,7 @@ private:
     void fakeFillTree();
     void fillTree(const QString& fileName);
     QTreeWidgetItem *fillTreeEntry(const QString& text, QTreeWidgetItem *root);
+    void rec_freeTreeItems(QTreeWidgetItem *root, bool isRoot);
 
 private slots:
     void on_loadCompetitor_triggerred();

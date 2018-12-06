@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "csvreader.h"
-#include "csvheader.h"
+#include "csvheaderselector.h"
 
 #include <QFileDialog>
 
@@ -21,13 +21,27 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    this->rec_freeTreeItems(this->ui->competitorsTree->invisibleRootItem(), true);
     delete ui;
+}
+
+void
+MainWindow::rec_freeTreeItems(QTreeWidgetItem *root, bool isRoot)
+{
+    if (root->childCount() > 0) {
+        for (int i = 0; i < root->childCount(); ++i) {
+            this->rec_freeTreeItems(root->child(0), false);
+        }
+    }
+
+    if (!isRoot)
+        delete root;
 }
 
 void
 MainWindow::setup()
 {
-    //this->fakeFillTree();
+    this->fakeFillTree();
     this->setupUiSettings();
 }
 
@@ -94,7 +108,7 @@ MainWindow::fillTreeEntry(const QString& text, QTreeWidgetItem *root)
     }
 
     if (i >= root->childCount()) {
-        //did not find the entry, should be freed when freeing ui
+        //did not find the entry, freed at exit
         tmpChild = new QTreeWidgetItem(QStringList(text));
         root->addChild(tmpChild);
     }
