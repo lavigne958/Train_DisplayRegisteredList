@@ -79,19 +79,6 @@ MainWindow::fillTree(QString fileName)
         for (auto& header: headerToInsert) {
             root = this->fillTreeEntry(c.getInfo(header), root);
         }
-
-        /*
-        //field:
-        root = this->fillTreeEntry(c.infos[0], root);
-        //level:
-        root = this->fillTreeEntry(c.infos[1], root);
-        //weight
-        root = this->fillTreeEntry(c.infos[2], root);
-        //team
-        root = this->fillTreeEntry(c.infos[3], root);
-        //name
-        root = this->fillTreeEntry(c.infos[4], root);
-        */
     }
 }
 

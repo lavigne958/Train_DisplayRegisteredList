@@ -85,16 +85,10 @@ CSVHeader::stripHeader(int maxStrSize)
 void
 CSVHeader::on_choice_changed(QString newText)
 {
-    qDebug() << "new selection: " << newText;
-
-    if (this->updateInProgress) {
-        qDebug() << "triggered when updating, ignoring";
-        return;
-    }
+    if (this->updateInProgress) return;
 
     this->updateInProgress = true;
 
-    qDebug() << "udpate in progress";
     //first find out which is the one that got updated:
     int i;
     QComboBox *updated = nullptr;
@@ -106,12 +100,8 @@ CSVHeader::on_choice_changed(QString newText)
         head = this->selctorsHeaders[i].second;
 
         if (updated->currentText().compare(newText) == 0) {
-            qDebug() << "Found the match combobox " << i;
-
             //found the comboBox that holds the new header, save the previous header
             previousHeader = this->selctorsHeaders[i].second;
-
-            qDebug() << "previous header was: " << previousHeader;
 
             //update the map with the new value
             this->selctorsHeaders[i].second = newText;
@@ -137,17 +127,14 @@ CSVHeader::on_choice_changed(QString newText)
 
         //if it is present, remove it
         if (pos != -1) {
-            qDebug() << "cmb " << i << " has the header, remove it (" << pos << ")";
             tmpCb->removeItem(pos);
         } else {
             //if it is not present, add then
-            qDebug() << "cmb " << i << " has not the header, add it then";
             tmpCb->addItem(newText);
         }
     }
 
     this->updateInProgress = false;
-    qDebug() << "udpate finished";
 }
 
 void

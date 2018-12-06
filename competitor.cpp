@@ -45,7 +45,6 @@ Competitor::getInfo(QString header)
 {
     for (auto info: this->infos) {
         if (info.first.compare(header) == 0) {
-            qDebug() << "found the matching header: " << header;
             return info.second;
         }
     }

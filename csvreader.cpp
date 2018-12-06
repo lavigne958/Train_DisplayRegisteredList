@@ -16,15 +16,14 @@ CSVReader::getCompetitors(QString fileName, QStringList headers)
     QList<QPair<QString, int>> headersMapping;
 
     //go thru each column header found in the csv file
-    for(int i = 0; i < firstLine.size(); ++i) {
+    for(int i = 0; i < headers.size(); ++i) {
 
         //cross it with each selected header given from the user
-        for (int j = 0; j < headers.size(); ++j) {
+        for (int j = 0; j < firstLine.size(); ++j) {
 
             //if it matches, add it to the local mapping, and remove it from the headers list, so it is faster (may be ?)
-            if (firstLine[i].compare(headers[j])) {
-                headersMapping.append(QPair<QString, int>(headers[j], i));
-                headers.removeAt(j);
+            if (firstLine[j].compare(headers[i]) == 0) {
+                headersMapping.append(QPair<QString, int>(headers[i], j));
             }
         }
     }
@@ -39,7 +38,6 @@ CSVReader::getCompetitors(QString fileName, QStringList headers)
 
         for (auto& h: headersMapping) {
             QPair<QString, QString> infos = QPair<QString, QString>(h.first, splitLine[h.second]);
-            qDebug() << "competitor: " << infos;
             competitorInfo << infos;
         }
 
