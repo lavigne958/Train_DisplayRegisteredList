@@ -11,8 +11,6 @@ Q_DECLARE_METATYPE(Competitor);
 
 #include <QDebug>
 
-#define FILE "../test.tsv"
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -28,6 +26,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+/**
+ * this recursive function check each node of the tree (DFS way).
+ * Each node is looked at, if it has children, then each children is looked at.
+ * just before returning from a child, the child is freed
+ *
+ * if (!isRoot) is here to make sure we do not try to free the fake root node
+ *
+ * @brief MainWindow::rec_freeTreeItems
+ * @param root QTreeWidgetItem node of the tree that is currently being checked
+ * @param isRoot bool true if it is the actual root of the tree, false otherwise
+ */
 void
 MainWindow::rec_freeTreeItems(QTreeWidgetItem *root, bool isRoot)
 {
@@ -44,14 +53,14 @@ MainWindow::rec_freeTreeItems(QTreeWidgetItem *root, bool isRoot)
 void
 MainWindow::setup()
 {
-    this->fakeFillTree();
+    //this->fakeFillTree();
     this->setupUiSettings();
 }
 
 void
 MainWindow::setupUiSettings()
 {
-    // group boxes
+    // group boxes titles
     this->ui->treeGroup->setTitle("Competitors tree");
     this->ui->infosGroup->setTitle("Competitor Info");
 
@@ -79,6 +88,10 @@ MainWindow::fakeFillTree()
     item->insertChild(0, new QTreeWidgetItem(QStringList(QString("B2"))));
 }
 
+/**
+ * @brief MainWindow::fillTree Fill the tree with the list of competitors comming from reader
+ * @param fileName String file to open.
+ */
 void
 MainWindow::fillTree(const QString& fileName)
 {
@@ -95,12 +108,17 @@ MainWindow::fillTree(const QString& fileName)
             root = this->fillTreeEntry(c.getInfo(header), root);
         }
 
-        qDebug() << "last root: " << root->text(0);
-        QVariant v = QVariant::fromValue(c);
-        root->setData(0, 1, v);
+        root->setData(0, 1, QVariant::fromValue(c));
     }
 }
 
+/**
+ * @brief MainWindow::fillTreeEntry insert/find from a specific node the child
+ * that matches @text
+ * @param text String this is the text that represent the node of the tree
+ * @param root QTreeWidgetItem actual node of the tree
+ * @return QTreeWdigetItem newly created node or the matching node if found
+ */
 QTreeWidgetItem *
 MainWindow::fillTreeEntry(const QString& text, QTreeWidgetItem *root)
 {
@@ -124,6 +142,9 @@ MainWindow::fillTreeEntry(const QString& text, QTreeWidgetItem *root)
     return tmpChild;
 }
 
+/**
+ * @brief MainWindow::on_loadCompetitor_triggerred triggered when user click on File->loadFile
+ */
 void
 MainWindow::on_loadCompetitor_triggerred()
 {
@@ -150,12 +171,20 @@ MainWindow::on_loadCompetitor_triggerred()
             this, &MainWindow::on_csvHeader_validate);
 }
 
+/**
+ * @brief MainWindow::on_csvHeader_validate triggered when user clicks on "OK" on the secondary Dialog
+ * @param headers QStringList list of headers from the csv that the user selected
+ */
 void
 MainWindow::on_csvHeader_validate(QStringList headers)
 {
     this->selectHeaders = headers;
 }
 
+/**
+ * @brief MainWindow::on_csvHeader_dialog_close triggered when the dialog window closes
+ * @param status int return status of the dialog 1 == ok
+ */
 void
 MainWindow::on_csvHeader_dialog_close(int status)
 {
