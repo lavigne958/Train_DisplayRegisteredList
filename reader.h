@@ -9,11 +9,15 @@
 
 class Reader
 {
+private:
+    QString fileName;
+
 public:
     Reader() = default;
+    Reader(QString fileName) : fileName(fileName) {}
     virtual ~Reader();
-    static QList<Competitor> getCompetitor(QString fileName, QStringList selectHeaders) { return QList<Competitor>(); }
-    static QStringList getHeaders(QString fileName) { return QStringList(); }
+    virtual QList<Competitor> getCompetitor(QStringList selectHeaders) = 0;
+    virtual QStringList getHeaders() = 0;
 };
 
 #endif // READER_H
