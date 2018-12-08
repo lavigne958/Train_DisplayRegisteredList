@@ -5,13 +5,13 @@
 #include <QTreeWidgetItem>
 #include <QFile>
 
-#include "competitor.h"
+#include "reader.h"
 
-class CSVReader
+class CSVReader : Reader
 {
 public:
-    static QList<Competitor> getCompetitors(const QString &fileName, QStringList headers);
-    static QStringList getHeader(const QString &fileName);
+    static QList<Competitor> getCompetitors(const QString& fileName, QStringList headers);
+    static QStringList getHeader(const QString& fileName);
 };
 
 #endif // CSVREADER_H

@@ -31,8 +31,8 @@ private:
 
 private slots:
     void on_loadCompetitor_triggerred();
-    void on_csvHeader_dialog_close(int status);
-    void on_csvHeader_validate(QStringList headers);
+    void on_header_dialog_validate(QStringList headers);
+    void on_header_dialog_close(int status);
 };
 
 #endif // MAINWINDOW_H

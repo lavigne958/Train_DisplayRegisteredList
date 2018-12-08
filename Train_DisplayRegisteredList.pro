@@ -25,21 +25,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
+    main.cpp \
+    mainwindow.cpp \
     csvreader.cpp \
     competitor.cpp \
-    csvheaderselector.cpp
+    headerselector.cpp
 
 HEADERS += \
-        mainwindow.h \
+    mainwindow.h \
     csvreader.h \
     competitor.h \
-    csvheaderselector.h
+    reader.h \
+    headerselector.h
 
 FORMS += \
-        mainwindow.ui \
-    csvheader.ui
+    mainwindow.ui \
+    headerselector.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

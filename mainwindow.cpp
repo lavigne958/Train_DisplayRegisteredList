@@ -1,10 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "competitor.h"
 #include "csvreader.h"
-#include "csvheaderselector.h"
+#include "headerselector.h"
 
 #include <QFileDialog>
 #include <QVariant>
+#include <QAction>
 
 //Needed for QVariant auto instanciate from Competitor class
 Q_DECLARE_METATYPE(Competitor);
@@ -160,15 +162,15 @@ MainWindow::on_loadCompetitor_triggerred()
 
     QStringList headers = CSVReader::getHeader(this->fileName);
 
-    CSVHeaderSelector *headerDialog = new CSVHeaderSelector(this, headers);
+    HeaderSelector *headerDialog = new HeaderSelector(this, headers);
     headerDialog->setModal(true);
     headerDialog->show();
 
-    connect(headerDialog, &CSVHeaderSelector::finished,
-            this, &MainWindow::on_csvHeader_dialog_close);
+    connect(headerDialog, &HeaderSelector::finished,
+            this, &MainWindow::on_header_dialog_close);
 
-    connect(headerDialog, &CSVHeaderSelector::validate,
-            this, &MainWindow::on_csvHeader_validate);
+    connect(headerDialog, &HeaderSelector::validate,
+            this, &MainWindow::on_header_dialog_validate);
 }
 
 /**
@@ -176,7 +178,7 @@ MainWindow::on_loadCompetitor_triggerred()
  * @param headers QStringList list of headers from the csv that the user selected
  */
 void
-MainWindow::on_csvHeader_validate(QStringList headers)
+MainWindow::on_header_dialog_validate(QStringList headers)
 {
     this->selectHeaders = headers;
 }
@@ -186,7 +188,7 @@ MainWindow::on_csvHeader_validate(QStringList headers)
  * @param status int return status of the dialog 1 == ok
  */
 void
-MainWindow::on_csvHeader_dialog_close(int status)
+MainWindow::on_header_dialog_close(int status)
 {
     if (status == 1) {
         this->fillTree(this->fileName);
