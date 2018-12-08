@@ -26,13 +26,19 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        competitor.cpp \
+        headerselector.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+        competitor.h \
+        reader.h \
+        headerselector.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+        headerselector.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
