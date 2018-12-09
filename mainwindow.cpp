@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QVariant>
 #include <QAction>
+#include <QMessageBox>
 
 //Needed for QVariant auto instanciate from Competitor class
 Q_DECLARE_METATYPE(Competitor);
@@ -164,12 +165,12 @@ MainWindow::on_loadCompetitor_triggerred()
                                                     "Tabulated Separated Value file (*.tsv)");
 
     if (this->fileName.isEmpty()) {
-        //did not choose to open a file
+        QMessageBox::warning(this, "Oops, can not continue", "No file has been selected.");
         return;
     }
 
     if (!this->reader) {
-        qDebug() << "can not read from null reader";
+        QMessageBox::warning(this, "Oops, can not continue", "The programme did not find a dedicated file reader");
         return;
     }
 
@@ -209,7 +210,10 @@ MainWindow::on_header_dialog_close(int status)
          * /!\ must allocate a class that extends reader /!\
          *
          */
-        //this->reader = new Reader(this->fileName);
+        //this->reader = new .......
         this->fillTree();
+        return;
     }
+
+    QMessageBox::warning(this, "Changing plans?", "The headers/key window closed unexpectidly, please load your faile again");
 }
