@@ -169,10 +169,11 @@ MainWindow::on_loadCompetitor_triggerred()
         return;
     }
 
-    if (!this->reader) {
-        QMessageBox::warning(this, "Oops, can not continue", "The programme did not find a dedicated file reader");
-        return;
-    }
+    /*
+     * /!\ must allocate a class that extends reader /!\
+     *
+     */
+    //this->reader = new ......
 
     //from there you know that a file has been selected, its name is stored under this->fileName.
     // then you can fill the tree with the reader you like
@@ -206,11 +207,7 @@ void
 MainWindow::on_header_dialog_close(int status)
 {
     if (status == 1) {
-        /*
-         * /!\ must allocate a class that extends reader /!\
-         *
-         */
-        //this->reader = new .......
+        QMessageBox::information(this, "Work in progress", "Loading competitors from " + this->reader->getFileName());
         this->fillTree();
         return;
     }
