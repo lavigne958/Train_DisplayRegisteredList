@@ -14,8 +14,13 @@ protected:
 
 public:
     Reader() = default;
-    Reader(QString fileName) : fileName(fileName) {}
-    virtual ~Reader();
+    Reader(QString& fileName)
+    {
+        this->fileName = fileName;
+    }
+    ~Reader()
+    {
+    }
     virtual QList<Competitor> getCompetitor(QStringList selectHeaders) = 0;
     virtual QStringList getHeaders() = 0;
 };
