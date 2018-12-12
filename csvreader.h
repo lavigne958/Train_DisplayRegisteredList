@@ -1,17 +1,16 @@
 #ifndef CSVREADER_H
 #define CSVREADER_H
 
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
-#include <QFile>
-
 #include "reader.h"
 
-class CSVReader : Reader
+class CSVReader : public Reader
 {
 public:
-    static QList<Competitor> getCompetitors(const QString& fileName, QStringList headers);
-    static QStringList getHeader(const QString& fileName);
+    CSVReader() = default;
+    CSVReader(QString fileName) : Reader(fileName) {}
+    ~CSVReader();
+    QList<Competitor> getCompetitor(QStringList selectHeaders);
+    QStringList getHeaders();
 };
 
 #endif // CSVREADER_H

@@ -5,6 +5,8 @@
 #include <QStringList>
 #include <QTreeWidgetItem>
 
+#include "reader.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -21,11 +23,12 @@ private:
     Ui::MainWindow *ui;
     QString fileName;
     QStringList selectHeaders;
+    Reader *reader;
 
     void setup();
     void setupUiSettings();
     void fakeFillTree();
-    void fillTree(const QString& fileName);
+    void fillTree();
     QTreeWidgetItem *fillTreeEntry(const QString& text, QTreeWidgetItem *root);
     void rec_freeTreeItems(QTreeWidgetItem *root, bool isRoot);
 

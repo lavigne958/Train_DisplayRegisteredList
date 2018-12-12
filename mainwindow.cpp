@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QVariant>
 #include <QAction>
+#include <QMessageBox>
 
 //Needed for QVariant auto instanciate from Competitor class
 Q_DECLARE_METATYPE(Competitor);
@@ -25,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     this->rec_freeTreeItems(this->ui->competitorsTree->invisibleRootItem(), true);
+    delete this->reader;
     delete ui;
 }
 
@@ -57,6 +59,8 @@ MainWindow::setup()
 {
     //this->fakeFillTree();
     this->setupUiSettings();
+
+    this->reader = nullptr;
 }
 
 void
@@ -95,9 +99,15 @@ MainWindow::fakeFillTree()
  * @param fileName String file to open.
  */
 void
-MainWindow::fillTree(const QString& fileName)
+MainWindow::fillTree()
 {
-    QList<Competitor> competitors = CSVReader::getCompetitors(fileName, this->selectHeaders);
+    if (!this->reader) {
+        qDebug() << "Can not fill tree, reader is null";
+        return;
+    }
+
+    //This reader is only an interface, you can use the reader you like
+    QList<Competitor> competitors = this->reader->getCompetitor(this->selectHeaders);
 
     QTreeWidgetItem *root = nullptr;
     for (auto& c: competitors) {
@@ -156,12 +166,16 @@ MainWindow::on_loadCompetitor_triggerred()
                                                     "Tabulated Separated Value file (*.tsv)");
 
     if (this->fileName.isEmpty()) {
-        //did not choose to open a file
+        QMessageBox::warning(this, "Oops, can not continue", "No file has been selected.");
         return;
     }
 
-    QStringList headers = CSVReader::getHeader(this->fileName);
 
+    this->reader = new CSVReader(this->fileName);
+
+    //from there you know that a file has been selected, its name is stored under this->fileName.
+    // then you can fill the tree with the reader you like
+    QStringList headers = this->reader->getHeaders();
     HeaderSelector *headerDialog = new HeaderSelector(this, headers);
     headerDialog->setModal(true);
     headerDialog->show();
@@ -191,6 +205,9 @@ void
 MainWindow::on_header_dialog_close(int status)
 {
     if (status == 1) {
-        this->fillTree(this->fileName);
+        this->fillTree();
+        return;
     }
+
+    QMessageBox::warning(this, "Changing plans?", "The headers/key window closed unexpectidly, please load your faile again");
 }

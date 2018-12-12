@@ -5,15 +5,26 @@
 #include <QStringList>
 #include <QString>
 
+#include <qdebug.h>
+
 #include "competitor.h"
 
 class Reader
 {
+protected:
+    QString fileName;
+
 public:
     Reader() = default;
-    virtual ~Reader();
-    static QList<Competitor> getCompetitor(QString fileName, QStringList selectHeaders) { return QList<Competitor>(); }
-    static QStringList getHeaders(QString fileName) { return QStringList(); }
+    Reader(QString& fileName)
+    {
+        this->fileName = fileName;
+    }
+    ~Reader()
+    {
+    }
+    virtual QList<Competitor> getCompetitor(QStringList selectHeaders) = 0;
+    virtual QStringList getHeaders() = 0;
 };
 
 #endif // READER_H
