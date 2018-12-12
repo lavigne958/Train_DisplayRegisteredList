@@ -25,6 +25,11 @@ public:
     }
     virtual QList<Competitor> getCompetitor(QStringList selectHeaders) = 0;
     virtual QStringList getHeaders() = 0;
+
+    QString getFileName()
+    {
+        return this->fileName;
+    }
 };
 
 #endif // READER_H

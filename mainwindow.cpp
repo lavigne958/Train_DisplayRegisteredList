@@ -170,7 +170,6 @@ MainWindow::on_loadCompetitor_triggerred()
         return;
     }
 
-
     this->reader = new CSVReader(this->fileName);
 
     //from there you know that a file has been selected, its name is stored under this->fileName.
@@ -205,6 +204,7 @@ void
 MainWindow::on_header_dialog_close(int status)
 {
     if (status == 1) {
+        QMessageBox::information(this, "Work in progress", "Loading competitors from " + this->reader->getFileName());
         this->fillTree();
         return;
     }
