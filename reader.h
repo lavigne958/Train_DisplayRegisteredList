@@ -9,7 +9,7 @@
 
 class Reader
 {
-private:
+protected:
     QString fileName;
 
 public:
