@@ -207,8 +207,10 @@ void
 MainWindow::on_header_dialog_close(int status)
 {
     if (status == 1) {
-        QMessageBox::information(this, "Work in progress", "Loading competitors from " + this->reader->getFileName());
+        QMessageBox *waitBox = new QMessageBox("Work in progress", "loading competitors from " + this->reader->getFileName(), QMessageBox::Icon(), 0, 0, 0);
+        waitBox->show();
         this->fillTree();
+        delete waitBox;
         return;
     }
 
